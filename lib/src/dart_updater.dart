@@ -38,7 +38,7 @@ Future backupDirectory(String pathToDirectoryToBackup) async {
       await new IO.Directory('$pathToDirectoryToBackup.bak');
 
   if (await oldBackupDirectory.exists()) {
-    await oldBackupDirectory.delete();
+    await oldBackupDirectory.delete(recursive: true);
   }
 
   IO.Directory oldDirectory = await new IO.Directory(pathToDirectoryToBackup);
