@@ -1,18 +1,23 @@
-import 'package:dart_updater/dart_updater.dart';
-import 'package:dart_updater/zip_extracter.dart';
+import 'package:dart_updater/dart_updater.dart' as du;
 import 'package:logging/logging.dart';
+
+final String destinationDirectory = "/home/joel/apps";
+final String devChannel = 'dev';
+final String stableChannel = 'stable';
+final String version = 'latest';
 
 main() async {
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((LogRecord rec) {
-    print('${rec.level.name}: ${rec.time}: ${rec.message}');
+    if (rec.message.isNotEmpty) {
+      print('${rec.level.name}: ${rec.time}: ${rec.message}');
+    }
   });
 
-  backupDirectory('$destinationDirectory/dart-sdk');
-  backupDirectory('$destinationDirectory/dartium');
+  du.channel = devChannel;
+  du.version = version;
+  du.destinationDirectory = destinationDirectory;
 
-  downloadSDK(devChannel, version)
-      .then((archive) => extractZipArchive(archive, destinationDirectory));
-  downloadDartium(devChannel, version, newDartiumFolderName: 'dartium')
-      .then((archive) => extractZipArchive(archive, destinationDirectory));
+  await du.updateDartSDK();
+  await du.updateDartium();
 }

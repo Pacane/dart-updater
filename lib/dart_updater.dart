@@ -13,16 +13,8 @@ final String baseDownloadUrl =
 final String SDKx64Release = 'dartsdk-linux-x64-release';
 final String dartiumx64Release = 'dartium-linux-x64-release';
 
-final String devChannel = 'dev';
-final String stableChannel = 'stable';
-final String version = 'latest';
-
 String sdkUrl(String channel, String version) =>
     '$baseDownloadUrl/$channel/release/$version/sdk/$SDKx64Release.zip';
 
 String dartiumUrl(String channel, String version) =>
     '$baseDownloadUrl/$channel/release/$version/dartium/$dartiumx64Release.zip';
-
-final destinationDirectory = "/home/joel/tmp";
-
-
