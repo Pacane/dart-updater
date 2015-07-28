@@ -12,5 +12,6 @@ dependencies:
   archive: "^1.0.20"
   http: "^0.11.3"
   logging: "^0.11.1"
+  unscripted: "^0.6.2"
 dev_dependencies:
   test: "^0.12.3+8"
