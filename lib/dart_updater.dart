@@ -6,15 +6,3 @@
 library dart_updater;
 
 export 'src/dart_updater.dart';
-
-final String baseDownloadUrl =
-    'https://storage.googleapis.com/dart-archive/channels';
-
-final String SDKx64Release = 'dartsdk-linux-x64-release';
-final String dartiumx64Release = 'dartium-linux-x64-release';
-
-String sdkUrl(String channel, String version) =>
-    '$baseDownloadUrl/$channel/release/$version/sdk/$SDKx64Release.zip';
-
-String dartiumUrl(String channel, String version) =>
-    '$baseDownloadUrl/$channel/release/$version/dartium/$dartiumx64Release.zip';

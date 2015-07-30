@@ -2,16 +2,33 @@ library dart_updater.src.dart_updater;
 
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 import 'package:dart_updater/dart_updater.dart' as du;
 import 'package:dart_updater/zip_extracter.dart';
 import 'package:archive/archive.dart';
 import 'dart:io' as IO;
-import 'package:logging/logging.dart';
+import 'dart:convert';
 
 final Logger log = new Logger('dart_updater');
+
+String destinationDirectory;
 String channel;
 String version;
-String destinationDirectory;
+
+final String baseDownloadUrl =
+    'http://gsdview.appspot.com/dart-archive/channels';
+
+String versionCheckURL(String channel, String version) =>
+    'http://gsdview.appspot.com/dart-archive/channels/$channel/$version/VERSION';
+
+final String SDKx64Release = 'dartsdk-linux-x64-release';
+final String dartiumx64Release = 'dartium-linux-x64-release';
+
+String sdkUrl(String channel, String version) =>
+    '$baseDownloadUrl/$channel/$version/sdk/$SDKx64Release.zip';
+
+String dartiumUrl(String channel, String version) =>
+    '$baseDownloadUrl/$channel/$version/dartium/$dartiumx64Release.zip';
 
 Future<Archive> downloadSDK() async {
   var sdkUrl = du.sdkUrl(channel, version);
@@ -98,4 +115,37 @@ Future updateDartium() async {
   await extractZipArchive(archive, destinationDirectory);
   await changePermissionsOnExecutables(
       '$destinationDirectory/dartium', 'chrome');
+}
+
+Future<bool> isNewVersionAvailable() async {
+  http.Response response =
+      await http.get(versionCheckURL(channel, version));
+
+  Map decoded = JSON.decode(response.body);
+  Version upstreamVersion = new Version.fromMap(decoded);
+
+  Version currentVersion = await getCurrentSDKVersion();
+
+  return upstreamVersion.version != currentVersion.version;
+}
+
+Future<Version> getCurrentSDKVersion() async {
+  IO.File versionFile = new IO.File('$destinationDirectory/dart-sdk/version');
+
+  List<String> lines = await versionFile.readAsLines();
+  return new Version()..version = lines[0];
+}
+
+class Version {
+  String version;
+  DateTime date;
+  String gitHash;
+
+  Version();
+
+  Version.fromMap(Map json) {
+    version = json['version'];
+    date = DateTime.parse(json['date']);
+    gitHash = json['revision'];
+  }
 }
