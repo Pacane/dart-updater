@@ -1,12 +1,13 @@
 name: dart_updater
-version: 0.0.1
+version: 0.0.3
 description: A command line application that updates Dart SDK and Dartium
 author: Joel Trottier-Hebert (Pacane) <iamquebecois@gmail.com>
 homepage: https://www.stacktrace.ca
 
 environment:
-  sdk: '>=1.0.0 <2.0.0'
-
+  sdk: '>=1.8.0 <2.0.0'
+executables:
+  dart_updater:
 dependencies:
   dart_config: "^0.5.0"
   archive: "^1.0.20"
