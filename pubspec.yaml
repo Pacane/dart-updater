@@ -1,5 +1,5 @@
 name: dart_updater
-version: 0.0.41
+version: 0.0.42
 description: A command line application that updates Dart SDK and Dartium
 author: Joel Trottier-Hebert (Pacane) <iamquebecois@gmail.com>
 homepage: https://github.com/Pacane/dart-updater
