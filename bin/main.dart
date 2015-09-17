@@ -1,7 +1,9 @@
 import 'package:dart_updater/dart_updater.dart' as du;
 import 'package:logging/logging.dart';
 
-final String destinationDirectory = "/home/joel/apps";
+final String appsPath = "/home/joel/apps";
+final String dartiumPath = '$appsPath/dartium';
+final String dartSdkPath = '$appsPath/dart-sdk';
 final String devChannel = 'dev';
 final String stableChannel = 'stable';
 final String version = 'latest';
@@ -16,7 +18,8 @@ main() async {
 
   du.channel = devChannel;
   du.version = version;
-  du.destinationDirectory = destinationDirectory;
+  du.dartiumPath = dartiumPath;
+  du.dartSdkPath = dartSdkPath;
 
   await du.updateDartSDK();
   await du.updateDartium();

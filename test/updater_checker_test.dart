@@ -6,9 +6,10 @@ import 'package:dart_updater/dart_updater.dart';
 
 main() async {
   setUp(() {
-    channel = 'dev';
+    channel = 'dev/release';
     version = 'latest';
-    destinationDirectory = 'test/';
+    dartiumPath = 'test/dartium/';
+    dartSdkPath = 'test/dart-sdk/';
   });
 
   test('no new version should be available', () async {

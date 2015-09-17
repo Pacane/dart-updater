@@ -11,7 +11,8 @@ import 'dart:convert';
 
 final Logger log = new Logger('dart_updater');
 
-String destinationDirectory;
+String dartiumPath;
+String dartSdkPath;
 String channel;
 String version;
 
@@ -89,32 +90,32 @@ Future changePermissionsOnExecutables(
 }
 
 Future updateDartSDK() async {
-  backupDirectory('$destinationDirectory/dart-sdk');
-  backupDirectory('$destinationDirectory/dartium');
+  backupDirectory(dartSdkPath);
+  backupDirectory(dartiumPath);
 
   var archive = await downloadSDK();
-  await extractZipArchive(archive, destinationDirectory);
+  await extractZipArchive(archive, dartSdkPath);
   await changePermissionsOnExecutables(
-      '$destinationDirectory/dart-sdk/bin', 'dart');
+      '$dartSdkPath/bin', 'dart');
   await changePermissionsOnExecutables(
-      '$destinationDirectory/dart-sdk/bin', 'dart2js');
+      '$dartSdkPath/bin', 'dart2js');
   await changePermissionsOnExecutables(
-      '$destinationDirectory/dart-sdk/bin', 'dartanalyzer');
+      '$dartSdkPath/bin', 'dartanalyzer');
   await changePermissionsOnExecutables(
-      '$destinationDirectory/dart-sdk/bin', 'dartdocgen');
+      '$dartSdkPath/bin', 'dartdocgen');
   await changePermissionsOnExecutables(
-      '$destinationDirectory/dart-sdk/bin', 'dartfmt');
+      '$dartSdkPath/bin', 'dartfmt');
   await changePermissionsOnExecutables(
-      '$destinationDirectory/dart-sdk/bin', 'docgen');
+      '$dartSdkPath/bin', 'docgen');
   await changePermissionsOnExecutables(
-      '$destinationDirectory/dart-sdk/bin', 'pub');
+      '$dartSdkPath/bin', 'pub');
 }
 
 Future updateDartium() async {
   var archive = await downloadDartium(newDartiumFolderName: 'dartium');
-  await extractZipArchive(archive, destinationDirectory);
+  await extractZipArchive(archive, dartiumPath);
   await changePermissionsOnExecutables(
-      '$destinationDirectory/dartium', 'chrome');
+      '$dartiumPath', 'chrome');
 }
 
 Future<bool> isNewVersionAvailable() async {
@@ -130,7 +131,7 @@ Future<bool> isNewVersionAvailable() async {
 }
 
 Future<Version> getCurrentSDKVersion() async {
-  IO.File versionFile = new IO.File('$destinationDirectory/dart-sdk/version');
+  IO.File versionFile = new IO.File('$dartSdkPath/version');
 
   List<String> lines = await versionFile.readAsLines();
   return new Version()..version = lines[0];

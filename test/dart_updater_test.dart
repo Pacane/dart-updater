@@ -7,7 +7,7 @@ import 'package:archive/archive.dart';
 
 main() async {
   setUp(() {
-    channel = 'dev';
+    channel = 'dev/release';
     version = 'latest';
   });
 
