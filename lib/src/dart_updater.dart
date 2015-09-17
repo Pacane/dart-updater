@@ -10,7 +10,6 @@ import 'dart:io' as IO;
 import 'dart:convert';
 
 final Logger log = new Logger('dart_updater');
-
 String dartiumPath;
 String dartSdkPath;
 String channel;

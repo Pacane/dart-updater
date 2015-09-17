@@ -36,13 +36,7 @@ class CheckForUpdatesCommand {
           defaultsTo: 'dev/release',
           allowed: const ['dev/release', 'stable/release', 'be/raw'],
           abbr: 'c')
-      String channel,
-      @Option(
-          abbr: 'd',
-          help:
-              'Specifies the directory where dartium and dart-sdk directories reside.',
-          defaultsTo: '/home/joel/apps')
-      String destinationDirectory}) async {
+      String channel}) async {
     du.version = 'latest';
     du.channel = channel;
 
