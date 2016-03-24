@@ -6,7 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:dart_updater/dart_updater.dart' as du;
 import 'package:dart_updater/zip_extracter.dart';
 import 'package:archive/archive.dart';
-import 'dart:io' as IO;
+import 'dart:io' as io;
 import 'dart:convert';
 
 final Logger log = new Logger('dart_updater');
@@ -21,7 +21,7 @@ final String baseDownloadUrl =
 String versionCheckURL(String channel, String version) =>
     'http://gsdview.appspot.com/dart-archive/channels/$channel/$version/VERSION';
 
-final String SDKx64Release = 'dartsdk-linux-x64-release';
+const String SDKx64Release = 'dartsdk-linux-x64-release';
 final String dartiumx64Release = 'dartium-linux-x64-release';
 
 String sdkUrl(String channel, String version) =>
@@ -38,8 +38,8 @@ Future<Archive> downloadSDK() async {
 }
 
 renameTopLevelDirectory(ArchiveFile archive, String newDartiumFolderName) {
-  archive.name = archive.name.replaceRange(
-      0, archive.name.indexOf('/'), newDartiumFolderName);
+  archive.name = archive.name
+      .replaceRange(0, archive.name.indexOf('/'), newDartiumFolderName);
 }
 
 ///
@@ -62,14 +62,14 @@ Future<Archive> downloadDartium({String newDartiumFolderName}) async {
 }
 
 Future backupDirectory(String pathToDirectoryToBackup) async {
-  IO.Directory oldBackupDirectory =
-      await new IO.Directory('$pathToDirectoryToBackup.bak');
+  io.Directory oldBackupDirectory =
+      await new io.Directory('$pathToDirectoryToBackup.bak');
 
   if (await oldBackupDirectory.exists()) {
     await oldBackupDirectory.delete(recursive: true);
   }
 
-  IO.Directory oldDirectory = await new IO.Directory(pathToDirectoryToBackup);
+  io.Directory oldDirectory = await new io.Directory(pathToDirectoryToBackup);
 
   if (await oldDirectory.exists()) {
     oldDirectory.rename('$pathToDirectoryToBackup.bak');
@@ -81,7 +81,7 @@ Future backupDirectory(String pathToDirectoryToBackup) async {
 
 Future changePermissionsOnExecutables(
     String directory, String executable) async {
-  IO.ProcessResult result = await IO.Process.run("chmod", ['+x', executable],
+  io.ProcessResult result = await io.Process.run("chmod", ['+x', executable],
       runInShell: true, workingDirectory: directory);
 
   log.warning(result.stderr);
@@ -94,32 +94,24 @@ Future updateDartSDK() async {
 
   var archive = await downloadSDK();
   await extractZipArchive(archive, dartSdkPath);
-  await changePermissionsOnExecutables(
-      '$dartSdkPath/bin', 'dart');
-  await changePermissionsOnExecutables(
-      '$dartSdkPath/bin', 'dart2js');
-  await changePermissionsOnExecutables(
-      '$dartSdkPath/bin', 'dartanalyzer');
-  await changePermissionsOnExecutables(
-      '$dartSdkPath/bin', 'dartdocgen');
-  await changePermissionsOnExecutables(
-      '$dartSdkPath/bin', 'dartfmt');
-  await changePermissionsOnExecutables(
-      '$dartSdkPath/bin', 'docgen');
-  await changePermissionsOnExecutables(
-      '$dartSdkPath/bin', 'pub');
+  await changePermissionsOnExecutables('$dartSdkPath/bin', 'dart');
+  await changePermissionsOnExecutables('$dartSdkPath/bin', 'dart2js');
+  await changePermissionsOnExecutables('$dartSdkPath/bin', 'dartanalyzer');
+  await changePermissionsOnExecutables('$dartSdkPath/bin', 'dartdocgen');
+  await changePermissionsOnExecutables('$dartSdkPath/bin', 'dartfmt');
+  await changePermissionsOnExecutables('$dartSdkPath/bin', 'docgen');
+  await changePermissionsOnExecutables('$dartSdkPath/bin', 'pub');
 }
 
 Future updateDartium() async {
   var archive = await downloadDartium(newDartiumFolderName: 'dartium');
   await extractZipArchive(archive, dartiumPath);
-  await changePermissionsOnExecutables(
-      '$dartiumPath', 'chrome');
+  await changePermissionsOnExecutables(dartiumPath, 'chrome');
+  await new io.Link('$dartiumPath/dartium').create('$dartiumPath/chrome');
 }
 
 Future<bool> isNewVersionAvailable() async {
-  http.Response response =
-      await http.get(versionCheckURL(channel, version));
+  http.Response response = await http.get(versionCheckURL(channel, version));
 
   Map decoded = JSON.decode(response.body);
   Version upstreamVersion = new Version.fromMap(decoded);
@@ -130,7 +122,7 @@ Future<bool> isNewVersionAvailable() async {
 }
 
 Future<Version> getCurrentSDKVersion() async {
-  IO.File versionFile = new IO.File('$dartSdkPath/version');
+  io.File versionFile = new io.File('$dartSdkPath/version');
 
   List<String> lines = await versionFile.readAsLines();
   return new Version()..version = lines[0];

@@ -9,9 +9,10 @@ environment:
 executables:
   dart_updater:
 dependencies:
-  archive: "^1.0.20"
-  http: "^0.11.3"
-  logging: "^0.11.1"
-  unscripted: "^0.6.2"
+  analyzer: '^0.27.2'
+  archive: '^1.0.20'
+  http: '^0.11.3+3'
+  logging: '^0.11.2'
+  unscripted: '^0.6.2'
 dev_dependencies:
-  test: "^0.12.3+8"
+  test: '^0.12.13'

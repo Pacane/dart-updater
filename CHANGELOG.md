@@ -8,3 +8,7 @@
 
 - Added support for environment variables for dartium and dart-sdk
 - Testing a viable version
+
+## 0.2.0
+
+- Updated Readme/Changelog

@@ -1,7 +1,7 @@
 library dart_updater.src.zip_extracter;
 
 import 'dart:async';
-import 'dart:io' as IO;
+import 'dart:io' as io;
 import 'package:archive/archive.dart';
 
 Future extractZipArchive(Archive archive, String extractDirectory) async {
@@ -12,10 +12,10 @@ Future extractZipArchive(Archive archive, String extractDirectory) async {
     List<int> data = file.content;
 
     if (filename.endsWith('/')) {
-      await new IO.Directory('$extractDirectoryWithoutTopLevel/$filename')
+      await new io.Directory('$extractDirectoryWithoutTopLevel/$filename')
           .create();
     } else {
-      await new IO.File('$extractDirectoryWithoutTopLevel/$filename')
+      await new io.File('$extractDirectoryWithoutTopLevel/$filename')
         ..create()
         ..writeAsBytes(data);
     }
