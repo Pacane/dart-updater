@@ -22,7 +22,7 @@ You should also have a standalone Dart version somewhere on your system to run t
 `$ dart_updater upgrade --help`
 
 ### Updating to `dev/release`
-`$ dart_updater upgrade`
+`$ dart_updater upgrade -c dev/release`
 
 ### Updating to `stable/release`
 `$ dart_updater upgrade -c stable/release`
