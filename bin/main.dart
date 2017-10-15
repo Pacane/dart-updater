@@ -22,5 +22,4 @@ main() async {
   du.dartSdkPath = dartSdkPath;
 
   await du.updateDartSDK();
-  await du.updateDartium();
 }

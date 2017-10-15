@@ -30,9 +30,19 @@ class Updater extends Object with CheckForUpdatesCommand, UpgradeCommand {
 
 class CheckForUpdatesCommand {
   @SubCommand(help: 'Checks for updates.')
-  check(
-      {@Option(help: 'The channel of the SDK', defaultsTo: 'dev/release', allowed: const ['dev/release', 'stable/release', 'be/raw'], abbr: 'c')
-          String channel}) async {
+  check({
+    @Option(
+      help: 'The channel of the SDK',
+      defaultsTo: 'dev/release',
+      allowed: const [
+        'dev/release',
+        'stable/release',
+        'be/raw',
+      ],
+      abbr: 'c',
+    )
+        String channel,
+  }) async {
     du.version = 'latest';
     du.channel = channel;
 
@@ -48,9 +58,18 @@ class CheckForUpdatesCommand {
 
 class UpgradeCommand {
   @SubCommand(help: 'Upgrades SDK and Dartium.')
-  upgrade(
-      {@Option(help: 'The channel of the SDK', defaultsTo: 'dev/release', allowed: const ['dev/release', 'stable/release', 'be/raw'], abbr: 'c')
-          String channel}) async {
+  upgrade({
+    @Option(
+        help: 'The channel of the SDK',
+        defaultsTo: 'dev/release',
+        allowed: const [
+          'dev/release',
+          'stable/release',
+          'be/raw',
+        ],
+        abbr: 'c')
+        String channel,
+  }) async {
     du.version = 'latest';
     du.channel = channel;
 
@@ -60,8 +79,6 @@ class UpgradeCommand {
       print("A different version from yours is available.");
       print("Upgrading SDK!");
       await du.updateDartSDK();
-      print("Upgrading Dartium!");
-      await du.updateDartium();
     } else {
       print("No new version available!");
     }

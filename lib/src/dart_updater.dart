@@ -22,13 +22,9 @@ String versionCheckURL(String channel, String version) =>
     'http://gsdview.appspot.com/dart-archive/channels/$channel/$version/VERSION';
 
 const String SDKx64Release = 'dartsdk-linux-x64-release';
-final String dartiumx64Release = 'dartium-linux-x64-release';
 
 String sdkUrl(String channel, String version) =>
     '$baseDownloadUrl/$channel/$version/sdk/$SDKx64Release.zip';
-
-String dartiumUrl(String channel, String version) =>
-    '$baseDownloadUrl/$channel/$version/dartium/$dartiumx64Release.zip';
 
 Future<Archive> downloadSDK() async {
   var sdkUrl = du.sdkUrl(channel, version);
@@ -40,25 +36,6 @@ Future<Archive> downloadSDK() async {
 renameTopLevelDirectory(ArchiveFile archive, String newDartiumFolderName) {
   archive.name = archive.name
       .replaceRange(0, archive.name.indexOf('/'), newDartiumFolderName);
-}
-
-///
-/// If you want to change Dartium's top level directory name to
-/// something predictable use [newDartiumFolderName]
-///
-Future<Archive> downloadDartium({String newDartiumFolderName}) async {
-  var dartiumUrl = du.dartiumUrl(channel, version);
-  http.Response response = await http.get(dartiumUrl);
-
-  Archive archive = new ZipDecoder().decodeBytes(await response.bodyBytes);
-
-  if (newDartiumFolderName != null) {
-    archive.files.forEach((archive) {
-      renameTopLevelDirectory(archive, newDartiumFolderName);
-    });
-  }
-
-  return archive;
 }
 
 Future backupDirectory(String pathToDirectoryToBackup) async {
@@ -96,18 +73,13 @@ Future updateDartSDK() async {
   await extractZipArchive(archive, dartSdkPath);
   await changePermissionsOnExecutables('$dartSdkPath/bin', 'dart');
   await changePermissionsOnExecutables('$dartSdkPath/bin', 'dart2js');
+  await changePermissionsOnExecutables('$dartSdkPath/bin', 'dartdevc');
   await changePermissionsOnExecutables('$dartSdkPath/bin', 'dartanalyzer');
   await changePermissionsOnExecutables('$dartSdkPath/bin', 'dartdocgen');
+  await changePermissionsOnExecutables('$dartSdkPath/bin', 'dartdoc');
   await changePermissionsOnExecutables('$dartSdkPath/bin', 'dartfmt');
   await changePermissionsOnExecutables('$dartSdkPath/bin', 'docgen');
   await changePermissionsOnExecutables('$dartSdkPath/bin', 'pub');
-}
-
-Future updateDartium() async {
-  var archive = await downloadDartium(newDartiumFolderName: 'dartium');
-  await extractZipArchive(archive, dartiumPath);
-  await changePermissionsOnExecutables(dartiumPath, 'chrome');
-  await new io.Link('$dartiumPath/dartium').create('$dartiumPath/chrome');
 }
 
 Future<bool> isNewVersionAvailable() async {

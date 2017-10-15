@@ -1,4 +1,8 @@
 # Changelog
+## 0.3.0
+- Removed Dartium support
+- Added dev compiler support
+- Updated Dependencies
 
 ## 0.2.0
 

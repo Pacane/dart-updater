@@ -1,6 +1,6 @@
 # dart_updater
 
-A command line application to update Dart SDK and Dartium for Linux x64 systems.
+A command line application to update the Dart SDK for Linux x64 systems.
 
 ## Installation
 `pub global activate dart_updater`
@@ -9,7 +9,6 @@ A command line application to update Dart SDK and Dartium for Linux x64 systems.
 
 To use `dart_updater`, you must add 2 variables to your environment variables :
 - `DART_SDK_PATH` : Path where the Dart SDK will be installed.
-- `DARTIUM_PATH` : Path where Dartium will be installed.
 
 You should also have a standalone Dart version somewhere on your system to run this package. But once you run it once, you can always keep your SDK up-to-date.
 
