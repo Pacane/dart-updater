@@ -15,4 +15,10 @@ main() async {
     var downloaded = await downloadSDK();
     expect(downloaded.runtimeType, Archive);
   });
+
+  test("download sdk should throw when version doesn't exist", () {
+    version = 'unexistant';
+
+    expect(() => downloadSDK(), throwsA("SDK $channel / $version not found"));
+  });
 }

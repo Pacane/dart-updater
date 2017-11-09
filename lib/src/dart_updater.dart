@@ -30,6 +30,10 @@ Future<Archive> downloadSDK() async {
   var sdkUrl = du.sdkUrl(channel, version);
   http.Response response = await http.get(sdkUrl);
 
+  if (response.statusCode == 404) {
+    throw 'SDK $channel / $version not found';
+  }
+
   return new ZipDecoder().decodeBytes(await response.bodyBytes);
 }
 
@@ -70,6 +74,7 @@ Future updateDartSDK() async {
   backupDirectory(dartiumPath);
 
   var archive = await downloadSDK();
+
   await extractZipArchive(archive, dartSdkPath);
   await changePermissionsOnExecutables('$dartSdkPath/bin', 'dart');
   await changePermissionsOnExecutables('$dartSdkPath/bin', 'dart2js');

@@ -69,8 +69,14 @@ class UpgradeCommand {
         ],
         abbr: 'c')
         String channel,
+    @Option(
+      help: 'The version of the SDK (example: 1.20.0)',
+      defaultsTo: 'latest',
+      abbr: 'v',
+    )
+        String version,
   }) async {
-    du.version = 'latest';
+    du.version = version;
     du.channel = channel;
 
     checkForRequiredEnvironmentVariables();
