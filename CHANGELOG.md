@@ -1,4 +1,7 @@
 # Changelog
+## 0.4.0
+- Added switch to be able to install specific version of the SDK.
+
 ## 0.3.0
 - Removed Dartium support
 - Added dev compiler support
